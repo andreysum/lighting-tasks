@@ -16,5 +16,6 @@ public class MainController {
 
     @FXML
     public void initialize() {
+        input.getItems().addAll("Any", "Second");
     }
 }
