@@ -25,6 +25,7 @@ import java.util.Objects;
 public class SpringStageLoader implements ApplicationContextAware {
     private static final String FXML_DIR = "/javafx/";
     private static final String MAIN_STAGE = "main";
+    private static final char SPACE_KEYCODE = ' ';
     private static ApplicationContext staticContext;
     private static String staticTitle;
     @Value("${applicationTitle}")
@@ -48,7 +49,7 @@ public class SpringStageLoader implements ApplicationContextAware {
 
     private static void registerHotKeys(Stage stage) {
         // global key to show window
-        JIntellitype.getInstance().registerHotKey(1, JIntellitypeConstants.MOD_CONTROL, ' ');
+        JIntellitype.getInstance().registerHotKey(1, JIntellitypeConstants.MOD_CONTROL, SPACE_KEYCODE);
         JIntellitype.getInstance().addHotKeyListener(identifier -> {
             if (identifier == 1)
                 Platform.runLater(stage::show);
@@ -57,7 +58,7 @@ public class SpringStageLoader implements ApplicationContextAware {
         stage.getScene().setOnKeyPressed(e -> {
             KeyCode keyCode = e.getCode();
             if (Objects.equals(keyCode, KeyCode.ESCAPE)) {
-                hideStage(stage);
+                Platform.runLater(() -> hideStage(stage));
             }
         });
     }
@@ -84,9 +85,9 @@ public class SpringStageLoader implements ApplicationContextAware {
         final Scene scene = new Scene(load());
         stage.setScene(scene);
         stage.focusedProperty().addListener((observable, wasFocused, isNowFocused) -> {
-            if (!isNowFocused) {
-                hideStage(stage);
-            }
+//            if (!isNowFocused) {
+//                Platform.runLater(() -> hideStage(stage));
+//            }
         });
         stage.initStyle(StageStyle.UNDECORATED);
         registerHotKeys(stage);

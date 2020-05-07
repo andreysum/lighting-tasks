@@ -1,4 +1,4 @@
-package com.github.andreysum.lighting.service.db.gen
+package com.github.andreysum.lighting.db.gen
 
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
