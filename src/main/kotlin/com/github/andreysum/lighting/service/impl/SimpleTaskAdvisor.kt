@@ -1,8 +1,8 @@
-package com.github.andreysum.lighting.logic.impl
+package com.github.andreysum.lighting.service.impl
 
 import com.github.andreysum.lighting.db.dao.TaskRepo
 import com.github.andreysum.lighting.db.schema.TaskEntity
-import com.github.andreysum.lighting.logic.TaskAdvisor
+import com.github.andreysum.lighting.service.TaskAdvisor
 import org.springframework.stereotype.Service
 
 @Service

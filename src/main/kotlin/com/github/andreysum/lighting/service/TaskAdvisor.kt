@@ -1,4 +1,4 @@
-package com.github.andreysum.lighting.logic
+package com.github.andreysum.lighting.service
 
 import com.github.andreysum.lighting.db.schema.TaskEntity
 

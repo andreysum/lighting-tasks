@@ -1,4 +1,4 @@
-package com.github.andreysum.lighting.controller
+package com.github.andreysum.lighting.service.impl
 
 import com.github.andreysum.lighting.db.dao.TaskRepo
 import com.github.andreysum.lighting.db.schema.TaskEntity
@@ -6,6 +6,7 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.event.EventHandler
 import javafx.scene.control.ComboBox
+import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 
 class AutoCompleteComboBoxListener(
@@ -14,7 +15,10 @@ class AutoCompleteComboBoxListener(
 ) : EventHandler<KeyEvent?> {
     private val data: ObservableList<TaskEntity> = comboBox.items
     override fun handle(event: KeyEvent?) {
-        if (event == null) return
+        if (event == null) {
+            return
+        }
+        performSpecialKeyActions(event)
         val tasks : ObservableList<TaskEntity> =
             FXCollections.observableArrayList(taskRepo.findAllByTitleContainingIgnoreCase(comboBox.editor.text))
         data.clear()
@@ -24,6 +28,17 @@ class AutoCompleteComboBoxListener(
         } else {
             comboBox.hide()
         }
+    }
+
+    private fun performSpecialKeyActions(event: KeyEvent) {
+        when (event.code) {
+            KeyCode.ENTER -> createTask()
+        }
+    }
+
+    private fun createTask() {
+        val task = TaskEntity(comboBox.editor.text)
+        taskRepo.save(task)
     }
 
     init {

@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.springframework.beans.BeansException;
@@ -16,7 +17,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Определяет порядок загрузки FX-компонентов.
@@ -55,12 +55,12 @@ public class SpringStageLoader implements ApplicationContextAware {
                 Platform.runLater(stage::show);
         });
         // local key to hide window
-        stage.getScene().setOnKeyPressed(e -> {
-            KeyCode keyCode = e.getCode();
-            if (Objects.equals(keyCode, KeyCode.ESCAPE)) {
-                Platform.runLater(() -> hideStage(stage));
-            }
-        });
+//        stage.getScene().setOnKeyPressed(e -> {
+//            KeyCode keyCode = e.getCode();
+//            if (Objects.equals(keyCode, KeyCode.ESCAPE)) {
+//                Platform.runLater(() -> hideStage(stage));
+//            }
+//        });
     }
 
     private static void hideStage(Stage stage) {
@@ -77,18 +77,28 @@ public class SpringStageLoader implements ApplicationContextAware {
         Platform.setImplicitExit(false);
         Stage stage = new Stage();
         configure(stage);
-        stage.setTitle(staticTitle);
         return stage;
     }
 
     private static void configure(Stage stage) throws IOException {
         final Scene scene = new Scene(load());
+        stage.setTitle(staticTitle);
         stage.setScene(scene);
-        stage.focusedProperty().addListener((observable, wasFocused, isNowFocused) -> {
+        // TODO asum commented due to need to clear logs of idea
+//        stage.focusedProperty().addListener((observable, wasFocused, isNowFocused) -> {
 //            if (!isNowFocused) {
 //                Platform.runLater(() -> hideStage(stage));
 //            }
-        });
+//        });
+        stage.addEventFilter(KeyEvent.KEY_RELEASED, filter -> {
+                    if (filter == null) {
+                        return;
+                    }
+                    if (filter.getCode() == KeyCode.ESCAPE) {
+                        Platform.runLater(stage::hide);
+                        filter.consume();
+                    }
+                });
         stage.initStyle(StageStyle.UNDECORATED);
         registerHotKeys(stage);
     }
