@@ -1,6 +1,7 @@
 package com.github.andreysum.lighting.db.schema
 
 import org.hibernate.annotations.Type
+import org.jetbrains.annotations.NotNull
 import org.springframework.data.annotation.AccessType
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -13,14 +14,14 @@ import javax.persistence.*
 @Entity
 @Table(name = "time_mark")
 @AccessType(AccessType.Type.FIELD)
-class TimeMarkerEntity(
-    @Enumerated
+abstract class TimeMarkerEntity : BaseEntity() {
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "taskid")
-    var task: TaskEntity
-) : BaseEntity() {
+    lateinit var task: TaskEntity
 
-    @Column
+    @NotNull
+    @Column(nullable = false)
     @Type(type = "timestamp")
     var marker = LocalDateTime.now()
 }

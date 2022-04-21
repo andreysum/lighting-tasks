@@ -14,6 +14,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -22,7 +24,7 @@ import java.io.IOException;
  * Определяет порядок загрузки FX-компонентов.
  */
 @Component
-public class SpringStageLoader implements ApplicationContextAware {
+public class SpringStageLoader implements ApplicationContextAware, ApplicationListener<ContextClosedEvent> {
     private static final String FXML_DIR = "/javafx/";
     private static final String MAIN_STAGE = "main";
     private static final char SPACE_KEYCODE = ' ';
@@ -110,5 +112,10 @@ public class SpringStageLoader implements ApplicationContextAware {
     public void setApplicationContext(ApplicationContext context) throws BeansException {
         SpringStageLoader.staticContext = context;
         SpringStageLoader.staticTitle = title;
+    }
+
+    @Override
+    public void onApplicationEvent(ContextClosedEvent event) {
+        JIntellitype.getInstance().cleanUp();
     }
 }

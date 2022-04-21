@@ -14,7 +14,6 @@ import javax.persistence.*
 class TaskEntity constructor(@Column val title: String) : BaseEntity() {
     constructor() : this("Task")
 
-    @Enumerated
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parentid")
     var parent: TaskEntity? = null
