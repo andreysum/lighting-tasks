@@ -18,10 +18,10 @@ abstract class TimeMarkerEntity : BaseEntity() {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "taskid")
-    lateinit var task: TaskEntity
+    open lateinit var task: TaskEntity
 
     @NotNull
     @Column(nullable = false)
     @Type(type = "timestamp")
-    var marker = LocalDateTime.now()
+    open var marker = LocalDateTime.now()
 }

@@ -4,6 +4,7 @@ import com.github.andreysum.lighting.db.schema.TaskEntity
 import com.github.andreysum.lighting.service.TaskListComboBoxInitializer
 import javafx.fxml.FXML
 import javafx.scene.control.ComboBox
+import net.rgielen.fxweaver.core.FxmlView
 import org.springframework.stereotype.Component
 
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component
  * @author andreysum
  */
 @Component
+@FxmlView("/javafx/main.fxml")
 class MainController(
     private val initializer: TaskListComboBoxInitializer
 ) {
